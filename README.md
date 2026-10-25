@@ -2,16 +2,20 @@
 
 TypeScript ecommerce service. Accounts register and log in, and signed-in users can add products to the catalog. Anyone can read the catalog.
 
-Data lives in memory and resets when the process stops. Passwords are stored as scrypt hashes. Login returns a bearer token that lasts 24 hours. Set `TOKEN_SECRET` before running anywhere other than local development.
+Accounts and products are stored in PostgreSQL. Passwords are scrypt hashes. Login returns a bearer token that lasts 24 hours. Set `TOKEN_SECRET` before running anywhere other than local development.
 
 ## Run
 
+Start Postgres, then the service. The compose file uses database `pancake` with user and password `pancake`, and publishes it on host port 5433.
+
 ```bash
 npm install
+docker compose up -d
+export DATABASE_URL=postgres://pancake:pancake@localhost:5433/pancake
 npm run dev
 ```
 
-The server listens on port 3000, or `PORT` if that is set.
+`DATABASE_URL` is required. The server listens on port 3000, or `PORT` if that is set. On startup the service creates the `users` and `products` tables and inserts the two sample products if those SKUs are not already present.
 
 ## Endpoints
 
